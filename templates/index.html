@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Health Care</title>
+  <!-- <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+</head>
+<style>
+  .logo {
+    width: 50px;
+    height: 50px;
+    color: black;
+    margin-top: 0;
+    margin-left: 2px;
+    margin-right: 10px;
+
+  }
+
+  .logo_img {
+    width: 50px;
+    height: 50px;
+    border: 2px sold black;
+    border-radius: 25px;
+
+  }
+
+  .cont {
+    background-color: black;
+    border-radius: 12px;
+    border: 2px solid black;
+    color: white;
+    padding: 40px;
+
+  }
+
+  .btn {
+    margin-top: 20px;
+    width: 100%;
+    font-weight: bold;
+    font-size: 30px;
+    border-radius: 12px;
+  }
+
+  .toggle-button {
+    margin-left: 20px;
+    margin-bottom: 20px;
+    width: 150px;
+    font-weight: bold;
+    font-size: 24px;
+    background-color: #e38425;
+    border-radius: 12px;
+
+  }
+</style>
+
+<body>
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <div class="logo">
+        <img class="logo_img" src="{{url_for('static',filename='image/logo.jpg')}}" alt="">
+      </div>
+      <a class="navbar-brand" href="#">Health Center</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/blog">Blog</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/about">About Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/contact">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " aria-current="page" href="/developer">Developer</a>
+          </li>
+        </ul>
+        <!-- <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form> -->
+      </div>
+    </div>
+  </nav>
+
+  <h1 class="text-center">Healh Care Center</h1>
+  <div class="container at-4 my-4 cont">
+    <form action="/predict" method="post">
+      <div class="form-group">
+        <label for="symptoms">Type symptoms</label>
+        <input type="text" name="symptoms" placeholder="Itching,skin_rash,....." class="form-control">
+      </div>
+      <button type="submit" class="btn btn-danger">Recommendation</button>
+    </form>
+  </div>
+  <!-- predicted_disease,disease_prec,disease_med,disease_diet,disease_workt -->
+
+  {% if predicted_disease %}
+  <h1 class="text-center  mt-4 my-4">Our AI Recommended Result</h1>
+  <div class="container d-flex ">
+    <div class="result-container ">
+      <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#diseaseModal">Disease</button>
+      <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#descriptionModal">Description</button>
+      <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#precautionModal">Precautions</button>
+      <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#medicationsModal">Medicine</button>
+      <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#dietModal">Diet</button>
+      <button class="toggle-button" data-bs-toggle="modal" data-bs-target="#workoutModal">Workout</button>
+    </div>
+  </div>
+
+  {% endif %}
+  <!-- predicted_disease  -->
+<div class="modal fade" id="diseaseModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">    
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Disease</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>{{predicted_disease}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="descriptionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">    
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Disease Description</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>{{disease_des}}</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="precautionModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">    
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Precautions</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+              {% for item in disease_prec %}
+                    <li>{{item}}</li>
+                    {% endfor %}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="medicationsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">    
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Medicines</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                {% for item in disease_med %}
+                    <li>{{item}}</li>
+                    {% endfor %}
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="dietModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">    
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Diet</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  {% for item in disease_diet %}
+                  <li>{{item}}</li>
+                  {% endfor %}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal fade" id="workoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">    
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title">Workout</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    {% for item in disease_workt %}
+                    <li>{{item}}</li>
+                    {% endfor %}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+  <!-- <p>{{predicted_disease}}</p>
+    <p>{{disease_des}}</p> -->
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
